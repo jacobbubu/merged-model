@@ -4,25 +4,26 @@
 [![Coverage Status](https://coveralls.io/repos/github/jacobbubu/merged-model/badge.svg)](https://coveralls.io/github/jacobbubu/merged-model)
 [![npm](https://img.shields.io/npm/v/@jacobbubu/merged-model.svg)](https://www.npmjs.com/package/@jacobbubu/merged-model/)
 
-> A starter project that makes creating a TypeScript module extremely easy.
-
-## Intro.
-
-This tool was modified from [typescript-library-starter](https://github.com/alexjoverm/typescript-library-starter), but I made the following revisions:
-
-  - Use GitHub Actions instead of TravisCI
-  - Used to develop Node.JS Module instead of packaging code for browser
+> A subclass of scuttlebutt-pull/model that supports merged values with same key.
 
 ## Usage
 
-```bash
-git clone https://github.com/jacobbubu/typescript-starter.git YOURFOLDERNAME
-cd YOURFOLDERNAME
-npm install
+``` ts
+const a = new MergedModel('A')
+const b = new MergedModel('B')
+
+const s1 = a.createStream({ name: 'a->b' })
+const s2 = b.createStream({ name: 'b->a' })
+
+a.set('num', 1)
+b.set('num', 2)
+a.set('foo', { foo: 'one' })
+b.set('foo', { bar: 'two' })
+
+s2.on('synced', () => {
+  expect(b.toJSON()).toEqual({ num: 2, foo: { foo: 'one', bar: 'two' } })
+  done()
+})
+
+link(s1, s2)
 ```
-
-**Start coding!** `package.json` and entry files are already set up for you, so don't worry about linking to your main file, typings, etc. Just keep those files with the same name.
-
-## Before push
-
-Before pushing the code to GitHub, please make sure that `NPM_TOKEN` is configured in `https://github.com/__your_repo__/settings/secrets`, or you can do this through [`semantic-release-cli`](https://github.com/semantic-release/cli).
