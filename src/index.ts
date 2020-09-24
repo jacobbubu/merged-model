@@ -1,16 +1,10 @@
-import {
-  Model,
-  ScuttlebuttOptions,
-  Update,
-  UpdateItems,
-  ModelValueItems,
-} from '@jacobbubu/scuttlebutt-pull'
+import { Model, Update, UpdateItems, ModelValueItems } from '@jacobbubu/scuttlebutt-pull'
 
 export class MergedModel extends Model {
   getMergedRecord(update: Update): false | Update {
     const transaction = update[UpdateItems.Data]
     const key = transaction[ModelValueItems.Key]
-    const current = this.store[key]
+    const current = this.store.get(key)
 
     if (!current) {
       return [...update] as Update
@@ -44,9 +38,9 @@ export class MergedModel extends Model {
     if (record === false) {
       return false
     } else if (record[UpdateItems.Data][ModelValueItems.Value] === null) {
-      delete this.store[key]
+      this.store.delete(key)
     } else {
-      this.store[key] = record
+      this.store.set(key, record)
     }
 
     this.emit('update', record)
