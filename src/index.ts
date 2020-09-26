@@ -43,8 +43,6 @@ export class MergedModel extends Model {
       this.store.set(key, record)
     }
 
-    this.emit('update', record)
-
     this.emit('update', update)
     this.emit('changed', key, record[UpdateItems.Data][ModelValueItems.Value])
     this.emit('changed:' + key, record[UpdateItems.Data][ModelValueItems.Value])
