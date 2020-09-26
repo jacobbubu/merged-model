@@ -1,9 +1,6 @@
 import { link } from '@jacobbubu/scuttlebutt-pull'
 import { MergedModel } from '../src'
 
-/**
- * Dummy test
- */
 describe('MergedModel', () => {
   const expected = {
     key: 'foo',
